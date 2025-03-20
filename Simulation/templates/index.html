@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}First Come First Served{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 class="title-heading">First Come first served</h1>
+    <a href="{{ url_for('process.generate_processes') }}" class="input-btn">Generate Input</a>
+    <table>
+        <tr>
+            <th>Process</th>
+            <th>Arrival time</th>
+            <th>Burst time</th>
+        </tr>
+        {% for process in processes %}
+        <tr>
+            <td>{{ process.name }}</td>
+            <td>{{ process.arrival_time }}</td>
+            <td>{{ process.burst_time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <section class="simulation">
+        <h3 class="sim-title">Process simulation</h3>
+        <div class="gantt-chart">
+            {% for process in processes %}
+            <div class="process" data-time="{{ process.arrival_time }}-{{ process.burst_time }}">{{ process.name }}</div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
