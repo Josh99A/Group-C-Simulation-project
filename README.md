@@ -3,7 +3,7 @@ This project is to simulate the Operating CPU Scheduling algorithms.
 
 ## How to install and run the program
 * Step 1: Create a new folder/ directory
-* step 2: Download/ Clone the app
+* step 2: Download/ Clone the app into the new folder
 * Step 3: Open the folder using your favorite text editor.
 * Step 4: Open the terminal and make sure your in the folder directory.
 * Step 5: Create a virtual Environment
@@ -13,6 +13,6 @@ This project is to simulate the Operating CPU Scheduling algorithms.
 
 ## Programs Simulated
 ### Operating Sytem CPU schduling algorithms
--First come First Serve
--Shortest Job First(Preemptive)
--Shortest Job First(Nonpreemptive)
+ * First come First Serve
+ * Shortest Job First(Preemptive)
+ * Shortest Job First(Nonpreemptive)
