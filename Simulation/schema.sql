@@ -10,7 +10,6 @@ CREATE TABLE process (
     waiting_time INTEGER,
     turnaround_time INTEGER,
     priority INTEGER,
-    status TEXT,
     time_quantum INTEGER,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

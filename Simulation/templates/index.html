@@ -10,49 +10,70 @@
 
   <div class="process-input">
     <form action="{{ url_for('process.add_process') }}" method="POST">
-      
       <div class="algo-select">
         <div class="form-group select-algorithm" id="select-algorithm">
           <label for="algorithm">Select a Scheduling Algorithm</label>
           <select
-          name="algorithm"
-          id="algorithm"
-          required
-          onchange="showHideFields()"
+            name="algorithm"
+            id="algorithm"
+            required
+            onchange="showHideFields()"
           >
-          {% if scheduling_types %} {% for schedule in scheduling_types %}
-          <option value="{{ schedule.id }}">{{ schedule.name }}</option>
-          {% endfor %} {% else %}
-          <option value="">{{ schedule.name }}</option>
-          {% endif %}
-        </select>
-        
-        <div class="form-group" id="time-quantum-group" style="display: none">
-          <label for="time-quantum">Time Quantum</label>
-          <input type="number" name="time_quantum" id="time-quantum" />
+            {% if scheduling_types %} {% for schedule in scheduling_types %}
+            <option value="{{ schedule.id }}">{{ schedule.name }}</option>
+            {% endfor %} {% else %}
+            <option value="">{{ schedule.name }}</option>
+            {% endif %}
+          </select>
+
+          <div class="form-group" id="time-quantum-group" style="display: none">
+            <label for="time-quantum">Time Quantum</label>
+            <input type="number" name="time_quantum" id="time-quantum" />
+          </div>
         </div>
-        
       </div>
-    </div>
-    
-    <div class="process-data">
+
+      <div class="process-data">
         <div class="form-group">
           <label for="process-name">Process Name</label>
-          <input type="text" name="name" id="process-name" placeholder="Process name" required />
+          <input
+            type="text"
+            name="name"
+            id="process-name"
+            placeholder="Process name"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="arrival-time">Arrival Time</label>
-          <input type="text" name="arrival_time" id="arrival-time" placeholder="Arrival Time" required />
+          <input
+            type="text"
+            name="arrival_time"
+            id="arrival-time"
+            placeholder="Arrival Time"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="burst-time">Burst Time</label>
-          <input type="number" name="burst_time" id="burst-time" placeholder="Burst time" required />
+          <input
+            type="number"
+            name="burst_time"
+            id="burst-time"
+            placeholder="Burst time"
+            required
+          />
         </div>
         <div class="form-group" id="priority-group" style="display: none">
           <label for="priority">Priority</label>
-          <input type="number" name="priority" id="priority" placeholder="Priority" />
+          <input
+            type="number"
+            name="priority"
+            id="priority"
+            placeholder="Priority"
+          />
         </div>
-       
+
         <!-- <div class="form-group">
                 <label for="status">Status</label>
                 <input type="text" name="status" id="status" required />
@@ -62,92 +83,89 @@
     </form>
   </div>
 
-  <div class="run-btn">
+  <div class="input-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th>Arrival Time</th>
+          <th>Burst Time</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if processes %} {% for process in processes %}
+        <tr>
+          <td>{{ process.name }}</td>
+          <td>{{ process.arrival_time }}</td>
+          <td>{{ process.burst_time }}</td>
+          <td>{{ process.priority }}</td>
+          <td>{{ process.status }}</td>
+          <td>
+            <form action="" method="POST" style="display: inline">
+              <button type="submit">Update</button>
+            </form>
+            <form
+              action="{{ url_for('process.delete_process', id=process.id) }}"
+              method="POST"
+              style="display: inline"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+          <td colspan="6">No processes added yet</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    {% if processes | length > 1 %}
     <a href="">
-      <button>Run simulation</button>
+      <button>Clear table</button>
     </a>
+    {% endif %}
+
+    <div class="run-btn">
+      <a href="">
+        <button>Run simulation</button>
+      </a>
+    </div>
   </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Process</th>
-        <th>Arrival Time</th>
-        <th>Burst Time</th>
-        <th>Priority</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if processes %} {% for process in processes %}
-      <tr>
-        <td>{{ process.name }}</td>
-        <td>{{ process.arrival_time }}</td>
-        <td>{{ process.burst_time }}</td>
-        <td>{{ process.priority }}</td>
-        <td>{{ process.status }}</td>
-        <td>
-          <form
-            action=""
-            method="POST"
-            style="display: inline"
-          >
-            <button type="submit">Update</button>
-          </form>
-          <form
-            action="{{ url_for('process.delete_process', id=process.id) }}"
-            method="POST"
-            style="display: inline"
-          >
-            <button type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %} {% else %}
-      <tr>
-        <td colspan="6">No processes added yet</td>
-      </tr>
-      {% endif %}
-    </tbody>
-  </table>
-
-<h3>Results</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Process</th>
-        <th>Arrival Time</th>
-        <th>Burst Time</th>
-        <th>Priority</th>
-        <th>Completed time</th>
-        <th>Waiting time</th>
-        <th>Turnaround time</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if processes %} {% for process in processes %}
-      <tr>
-        <td>{{ process.name }}</td>
-        <td>{{ process.arrival_time }}</td>
-        <td>{{ process.burst_time }}</td>
-        <td>{{ process.priority }}</td>
-        <td>{{ process.status }}</td>
-        
-      </tr>
-      {% endfor %} {% else %}
-      <tr>
-        <td colspan="6">No processes added yet</td>
-      </tr>
-      {% endif %}
-    </tbody>
-  </table>
-
-  {% if processes | length > 1 %}
-  <a href="">
-    <button>Clear table</button>
-  </a>
-  {% endif %}
+  <div class="results-table">
+    <h3>Results</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th>Arrival Time</th>
+          <th>Burst Time</th>
+          <th>Priority</th>
+          <th>Completed time</th>
+          <th>Waiting time</th>
+          <th>Turnaround time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if processes %} {% for process in processes %}
+        <tr>
+          <td>{{ process.name }}</td>
+          <td>{{ process.arrival_time }}</td>
+          <td>{{ process.burst_time }}</td>
+          <td>{{ process.priority }}</td>
+          <td>{{ process.status }}</td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+          <td colspan="6">No processes added yet</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
 
   <section class="simulation">
     <h3 class="sim-title">Gantt Chart</h3>
@@ -168,6 +186,5 @@
     <p>Average Turnaround Time: {{ avg_turnaround_time }}</p>
   </section>
 </div>
-
 
 {% endblock %}

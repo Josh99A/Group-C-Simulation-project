@@ -235,11 +235,14 @@ header a:hover {
     padding: 10px 20px;
     cursor: pointer;
     transition: 0.3s;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
 }
 
 .run-btn button:hover{
     background-color: #0056b3;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 @media screen and (max-width: 768px) {
@@ -332,11 +335,18 @@ header a:hover {
     }
 }
 
+.input-table, .results-table{
+    margin-top: 20px;
+    width: 100%;
+
+}
+
 table {
     border-collapse: collapse;
     margin-top: 20px;
     overflow-x: auto;
     display: block;
+    ;
 }
 
 table, th, td {
