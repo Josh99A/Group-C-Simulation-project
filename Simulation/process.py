@@ -26,7 +26,7 @@ class Process:
 def index():
     db = get_db()
     processes = db.execute(
-        'SELECT id, name, arrival_time, burst_time, priority, status FROM process'
+        'SELECT id, name, arrival_time, burst_time, priority  FROM process'
     ).fetchall()
     
     scheduling_types = db.execute(
