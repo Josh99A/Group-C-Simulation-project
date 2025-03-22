@@ -38,19 +38,19 @@
     <div class="process-data">
         <div class="form-group">
           <label for="process-name">Process Name</label>
-          <input type="text" name="name" id="process-name" required />
+          <input type="text" name="name" id="process-name" placeholder="Process name" required />
         </div>
         <div class="form-group">
           <label for="arrival-time">Arrival Time</label>
-          <input type="text" name="arrival_time" id="arrival-time" required />
+          <input type="text" name="arrival_time" id="arrival-time" placeholder="Arrival Time" required />
         </div>
         <div class="form-group">
           <label for="burst-time">Burst Time</label>
-          <input type="number" name="burst_time" id="burst-time" required />
+          <input type="number" name="burst_time" id="burst-time" placeholder="Burst time" required />
         </div>
         <div class="form-group" id="priority-group" style="display: none">
           <label for="priority">Priority</label>
-          <input type="number" name="priority" id="priority" />
+          <input type="number" name="priority" id="priority" placeholder="Priority" />
         </div>
        
         <!-- <div class="form-group">
@@ -89,7 +89,7 @@
         <td>{{ process.status }}</td>
         <td>
           <form
-            action="{{ url_for('process.update_process', id=process.id) }}"
+            action=""
             method="POST"
             style="display: inline"
           >
@@ -103,6 +103,37 @@
             <button type="submit">Delete</button>
           </form>
         </td>
+      </tr>
+      {% endfor %} {% else %}
+      <tr>
+        <td colspan="6">No processes added yet</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+<h3>Results</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Process</th>
+        <th>Arrival Time</th>
+        <th>Burst Time</th>
+        <th>Priority</th>
+        <th>Completed time</th>
+        <th>Waiting time</th>
+        <th>Turnaround time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if processes %} {% for process in processes %}
+      <tr>
+        <td>{{ process.name }}</td>
+        <td>{{ process.arrival_time }}</td>
+        <td>{{ process.burst_time }}</td>
+        <td>{{ process.priority }}</td>
+        <td>{{ process.status }}</td>
+        
       </tr>
       {% endfor %} {% else %}
       <tr>

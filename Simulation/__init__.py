@@ -32,7 +32,7 @@ def create_app(test_config=None):
     from . import db, process
     app.register_blueprint(process.process_bp)
     # app.register_blueprint(blog.bp)
-    # app.add_url_rule('/', endpoint='index' )
+    app.add_url_rule('/', endpoint='index' )
     db.init_app(app)
     
     return app

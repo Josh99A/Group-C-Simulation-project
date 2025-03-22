@@ -28,6 +28,7 @@ def index():
     processes = db.execute(
         'SELECT id, name, arrival_time, burst_time, priority, status FROM process'
     ).fetchall()
+    
     scheduling_types = db.execute(
         'SELECT id, name FROM scheduling_type'
     ).fetchall()
@@ -57,6 +58,7 @@ def delete_process(id):
     db = get_db()
     db.execute('DELETE FROM process WHERE id = ?', (id,))
     db.commit()
+    return redirect(url_for('process.index'))
 
 
 

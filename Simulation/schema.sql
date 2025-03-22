@@ -4,11 +4,15 @@ DROP TABLE IF EXISTS scheduling_type;
 CREATE TABLE process (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    arrival_time TIMESTAMP NOT NULL,
+    arrival_time  NOT NULL,
     burst_time INTEGER NOT NULL,
+    completed_time INTEGER,
+    waiting_time INTEGER,
+    turnaround_time INTEGER,
     priority INTEGER,
     status TEXT,
-    time_quantum INTEGER
+    time_quantum INTEGER,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE scheduling_type (
