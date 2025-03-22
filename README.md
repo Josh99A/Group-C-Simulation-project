@@ -9,7 +9,7 @@ This project is to simulate the Operating CPU Scheduling algorithms.
 * Step 5: Create a virtual Environment
 * Step 6: Activate the virtual environment
 * Step 7: Type pip install -r requirements.txt in the terminal
-* Step 8: run the command flask --app Simulation init-db to initialise the database
+* Step 8: Run the command flask --app Simulation init-db to initialise the database
 * Step 9: use the command flask --app Simulation run --debug  to run the development server.
 
 ## Programs Simulated
