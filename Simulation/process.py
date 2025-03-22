@@ -41,12 +41,12 @@ def add_process():
     arrival_time = request.form['arrival_time']
     burst_time = request.form['burst_time']
     priority = request.form['priority']
-    status = request.form['status']
-    process = Process(name, arrival_time, burst_time, priority, status)
+    
+
     db = get_db()
     db.execute(
-        "INSERT INTO process (name, arrival_time, burst_time, priority, status) VALUES (?, ?, ?, ?, ?)",
-        (name, arrival_time, burst_time, priority, status),
+        "INSERT INTO process (name, arrival_time, burst_time, priority) VALUES (?, ?, ?, ?)",
+        (name, arrival_time, burst_time, priority),
     )
     db.commit()
     flash('Process added successfully')

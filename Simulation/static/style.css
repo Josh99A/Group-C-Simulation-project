@@ -156,18 +156,15 @@ header a:hover {
 
 .title-heading {
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 25px;
 }
 
-.input-btn {
-    cursor: pointer;
-    color: white;
-    background-color: black;
-    border-radius: 5px;
-    border: none;
-    padding: 10px 20px;
-    margin: 20px 0;
+.title-subheading {
+    text-align: center;
+    font-size: 20px;
 }
+
+
 
 .simulation {
     margin-top: 20px;
@@ -206,10 +203,43 @@ header a:hover {
     font-size: 12px;
     color: #333;
 }
-
-.process-input form{
+.process-input form {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+   
+}
+
+.process-input .algo-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+}
+.process-input .algo-select  label[for="algorithm"] {
+    font-weight: bold;
+}
+
+.process-input .process-data{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    
+}
+
+.run-btn button{
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.run-btn button:hover{
+    background-color: #0056b3;
+    transform: scale(1.1);
 }
 
 @media screen and (max-width: 768px) {
@@ -246,6 +276,9 @@ header a:hover {
 .form-group {
     margin-bottom: 15px;
 }
+.process-data .form-group{
+    margin-top: 10px;
+}
 .form-group label {
     display: block;
     margin-bottom: 5px;
@@ -264,9 +297,15 @@ header a:hover {
     border: none;
     cursor: pointer;
     text-decoration: none;
+    margin: 32px 0;
+    max-height: 50px;
 }
 .input-btn:hover {
     background-color: #0056b3;
+}
+
+#time-quantum-group{
+    margin-top: 5px;
 }
 
 .gantt-chart {
@@ -294,7 +333,6 @@ header a:hover {
 }
 
 table {
-    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     overflow-x: auto;
@@ -321,6 +359,7 @@ th, td {
         padding: 8px;
     }
     table {
+        width: 100%;
         display: block;
         overflow-x: auto;
         white-space: nowrap;

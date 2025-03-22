@@ -2,56 +2,69 @@
 %} {% block content %}
 <div class="content">
   <h1 class="title-heading">Operating Systems CPU Scheduling Algorithms</h1>
+  <h3 class="title-subheading">Group C</h3>
 
   <div class="process-input">
-    <form action="">
-      <div class="form-group">
-        <h3 for="algorithm">Select a Scheduling Algorithm</h3>
-        <select name="algorithm" id="algorithm" required onchange="showHideFields()">
+    <form action=""></form>
+  </div>
+
+  <div class="process-input">
+    <form action="{{ url_for('process.add_process') }}" method="POST">
+      
+      <div class="algo-select">
+        <div class="form-group select-algorithm" id="select-algorithm">
+          <label for="algorithm">Select a Scheduling Algorithm</label>
+          <select
+          name="algorithm"
+          id="algorithm"
+          required
+          onchange="showHideFields()"
+          >
           {% if scheduling_types %} {% for schedule in scheduling_types %}
           <option value="{{ schedule.id }}">{{ schedule.name }}</option>
           {% endfor %} {% else %}
           <option value="">{{ schedule.name }}</option>
           {% endif %}
         </select>
+        
+        <div class="form-group" id="time-quantum-group" style="display: none">
+          <label for="time-quantum">Time Quantum</label>
+          <input type="number" name="time_quantum" id="time-quantum" />
+        </div>
+        
       </div>
-    </form>
-  </div>
-
-  <div class="process-input">
-    <h3 for="algorithm">Add process</h3>
-    <form action="{{ url_for('process.add_process') }}" method="POST">
-      <div class="form-group">
-        <label for="process-name">Process Name</label>
-        <input type="text" name="name" id="process-name" required />
+    </div>
+    
+    <div class="process-data">
+        <div class="form-group">
+          <label for="process-name">Process Name</label>
+          <input type="text" name="name" id="process-name" required />
+        </div>
+        <div class="form-group">
+          <label for="arrival-time">Arrival Time</label>
+          <input type="text" name="arrival_time" id="arrival-time" required />
+        </div>
+        <div class="form-group">
+          <label for="burst-time">Burst Time</label>
+          <input type="number" name="burst_time" id="burst-time" required />
+        </div>
+        <div class="form-group" id="priority-group" style="display: none">
+          <label for="priority">Priority</label>
+          <input type="number" name="priority" id="priority" />
+        </div>
+       
+        <!-- <div class="form-group">
+                <label for="status">Status</label>
+                <input type="text" name="status" id="status" required />
+              </div> -->
+        <button type="submit" class="input-btn">Add Process</button>
       </div>
-      <div class="form-group">
-        <label for="arrival-time">Arrival Time</label>
-        <input type="text" name="arrival_time" id="arrival-time" required />
-      </div>
-      <div class="form-group">
-        <label for="burst-time">Burst Time</label>
-        <input type="number" name="burst_time" id="burst-time" required />
-      </div>
-      <div class="form-group" id="priority-group" style="display: none">
-        <label for="priority">Priority</label>
-        <input type="number" name="priority" id="priority" />
-      </div>
-      <div class="form-group" id="time-quantum-group" style="display: none">
-        <label for="time-quantum">Time Quantum</label>
-        <input type="number" name="time_quantum" id="time-quantum" />
-      </div>
-      <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" name="status" id="status" required />
-      </div>
-      <button type="submit" class="input-btn">Add Process</button>
     </form>
   </div>
 
   <div class="run-btn">
     <a href="">
-      <button style="width: 100%">Run simulation</button>
+      <button>Run simulation</button>
     </a>
   </div>
 
@@ -67,8 +80,7 @@
       </tr>
     </thead>
     <tbody>
-      {% if processes %} 
-      {% for process in processes %}
+      {% if processes %} {% for process in processes %}
       <tr>
         <td>{{ process.name }}</td>
         <td>{{ process.arrival_time }}</td>
@@ -126,26 +138,5 @@
   </section>
 </div>
 
-<script>
-  function showHideFields() {
-    var algorithm = document.getElementById("algorithm").value;
-    var priorityGroup = document.getElementById("priority-group");
-    var timeQuantumGroup = document.getElementById("time-quantum-group");
 
-    console.log(algorithm);
-    console.log(algorithm == 4)
-
-    if (algorithm == 5) {
-      priorityGroup.style.display = "block";
-    } else {
-      priorityGroup.style.display = "none";
-    }
-
-    if (algorithm === 4) {
-      timeQuantumGroup.style.display = "block";
-    } else {
-      timeQuantumGroup.style.display = "none";
-    }
-  }
-</script>
 {% endblock %}
