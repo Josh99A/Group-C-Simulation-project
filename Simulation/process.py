@@ -1,8 +1,12 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
 import random
 from datetime import datetime, timedelta
 
-app = Flask(__name__)
+from .db import get_db
+
+
 process_bp = Blueprint('process', __name__)
 
 class Process:
@@ -20,18 +24,93 @@ class Process:
 
 @process_bp.route('/')
 def index():
-    processes = []
-    return render_template('index.html', processes=processes)
+    db = get_db()
+    processes = db.execute(
+        'SELECT id, name, arrival_time, burst_time, priority, status FROM process'
+    ).fetchall()
+    scheduling_types = db.execute(
+        'SELECT id, name FROM scheduling_type'
+    ).fetchall()
 
-@process_bp.route('/generate')
-def generate_processes():
-    processes = []
-    for i in range(1, 6):  
-        name = f'P{i}'
-        arrival_time = random.randint(0,60)
-        burst_time = random.randint(10, 50)
-        priority = random.randint(1, 5)
-        status = random.choice(['waiting', 'running', 'completed'])
-        processes.append(Process(i, name, arrival_time, burst_time, priority, status))
-    return render_template('index.html', processes=processes)
+    return render_template('index.html', processes=processes, scheduling_types=scheduling_types)
+
+
+@process_bp.route('/add_process', methods=['POST'])
+def add_process():
+    name = request.form['name']
+    arrival_time = request.form['arrival_time']
+    burst_time = request.form['burst_time']
+    priority = request.form['priority']
+    status = request.form['status']
+    process = Process(name, arrival_time, burst_time, priority, status)
+    db = get_db()
+    db.execute(
+        "INSERT INTO process (name, arrival_time, burst_time, priority, status) VALUES (?, ?, ?, ?, ?)",
+        (name, arrival_time, burst_time, priority, status),
+    )
+    db.commit()
+    flash('Process added successfully')
+    return redirect(url_for('process.index'))
+
+@process_bp.route('/delete_process/<int:id>', methods=['POST'])
+def delete_process(id):
+    db = get_db()
+    db.execute('DELETE FROM process WHERE id = ?', (id,))
+    db.commit()
+
+
+
+# class processes:
+#     def __init__(self, id, at, bt, ct):
+#         self.id = id
+#         self.at = at
+#         self.bt = bt
+#         self.ct = ct
+#         self.tat = self.ct-self.at
+#         self.wt = self.tat-self.bt
+
+#     def get(self):
+#         print(f"{self.id}\t{self.at}\t{self.bt}\t{self.ct}\t{self.tat}\t{self.wt}")
+
+#     def turnaround(self):
+#         return self.tat
+
+#     def waiting(self):
+#         return self.wt
+
+
+# num = int(input("Enter the Number of Processes:"))
+# l = []
+# ct = 0
+
+# for i in range(num):
+
+#     print(f'Process {i+1}')
+#     at = int(input("Enter the Arrival Time:-"))
+#     bt = int(input("Enter the Burst Time:-"))
+#     if (len(l) == 0):
+#         ct = bt
+#         l.append(processes(i, at, bt, ct))
+#     else:
+#         ct += bt
+#         l.append(processes(i, at, bt, ct))
+
+#     print("\n")
+# avg_tat = 0
+# avg_wat = 0
+# print("PID\tAT\tBT\tCT\tTAT\tWT")
+# for process in l:
+#     process.get()
+
+# for process in l:
+#     avg_tat += process.turnaround()
+#     avg_wat += process.waiting()
+# print(f"Avg_turnaround:{avg_tat/num}\nAvg_Waitingtime:{avg_wat/num}")
+
+# # pid at bt
+# # 0 0 5
+# # 1 2 3
+# # 2 6 2
+# # 3 7 3
+
 

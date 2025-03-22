@@ -1,32 +1,151 @@
-{% extends "base.html" %}
-
-{% block title %}First Come First Served{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}CPU Scheduling Algorithms{% endblock
+%} {% block content %}
 <div class="content">
-    <h1 class="title-heading">First Come first served</h1>
-    <a href="{{ url_for('process.generate_processes') }}" class="input-btn">Generate Input</a>
-    <table>
-        <tr>
-            <th>Process</th>
-            <th>Arrival time</th>
-            <th>Burst time</th>
-        </tr>
-        {% for process in processes %}
-        <tr>
-            <td>{{ process.name }}</td>
-            <td>{{ process.arrival_time }}</td>
-            <td>{{ process.burst_time }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <section class="simulation">
-        <h3 class="sim-title">Process simulation</h3>
-        <div class="gantt-chart">
-            {% for process in processes %}
-            <div class="process" data-time="{{ process.arrival_time }}-{{ process.burst_time }}">{{ process.name }}</div>
-            {% endfor %}
-        </div>
-    </section>
+  <h1 class="title-heading">Operating Systems CPU Scheduling Algorithms</h1>
+
+  <div class="process-input">
+    <form action="">
+      <div class="form-group">
+        <h3 for="algorithm">Select a Scheduling Algorithm</h3>
+        <select name="algorithm" id="algorithm" required onchange="showHideFields()">
+          {% if scheduling_types %} {% for schedule in scheduling_types %}
+          <option value="{{ schedule.id }}">{{ schedule.name }}</option>
+          {% endfor %} {% else %}
+          <option value="">{{ schedule.name }}</option>
+          {% endif %}
+        </select>
+      </div>
+    </form>
+  </div>
+
+  <div class="process-input">
+    <h3 for="algorithm">Add process</h3>
+    <form action="{{ url_for('process.add_process') }}" method="POST">
+      <div class="form-group">
+        <label for="process-name">Process Name</label>
+        <input type="text" name="name" id="process-name" required />
+      </div>
+      <div class="form-group">
+        <label for="arrival-time">Arrival Time</label>
+        <input type="text" name="arrival_time" id="arrival-time" required />
+      </div>
+      <div class="form-group">
+        <label for="burst-time">Burst Time</label>
+        <input type="number" name="burst_time" id="burst-time" required />
+      </div>
+      <div class="form-group" id="priority-group" style="display: none">
+        <label for="priority">Priority</label>
+        <input type="number" name="priority" id="priority" />
+      </div>
+      <div class="form-group" id="time-quantum-group" style="display: none">
+        <label for="time-quantum">Time Quantum</label>
+        <input type="number" name="time_quantum" id="time-quantum" />
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" name="status" id="status" required />
+      </div>
+      <button type="submit" class="input-btn">Add Process</button>
+    </form>
+  </div>
+
+  <div class="run-btn">
+    <a href="">
+      <button style="width: 100%">Run simulation</button>
+    </a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Process</th>
+        <th>Arrival Time</th>
+        <th>Burst Time</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if processes %} 
+      {% for process in processes %}
+      <tr>
+        <td>{{ process.name }}</td>
+        <td>{{ process.arrival_time }}</td>
+        <td>{{ process.burst_time }}</td>
+        <td>{{ process.priority }}</td>
+        <td>{{ process.status }}</td>
+        <td>
+          <form
+            action="{{ url_for('process.update_process', id=process.id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit">Update</button>
+          </form>
+          <form
+            action="{{ url_for('process.delete_process', id=process.id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %} {% else %}
+      <tr>
+        <td colspan="6">No processes added yet</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  {% if processes | length > 1 %}
+  <a href="">
+    <button>Clear table</button>
+  </a>
+  {% endif %}
+
+  <section class="simulation">
+    <h3 class="sim-title">Gantt Chart</h3>
+    <div class="gantt-chart">
+      {% for process in processes %}
+      <div
+        class="process"
+        data-time="{{ process.arrival_time }}-{{ process.burst_time }}"
+      >
+        {{ process.name }}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="results">
+    <h3 class="results-title">Results</h3>
+    <p>Average Waiting Time: {{ avg_waiting_time }}</p>
+    <p>Average Turnaround Time: {{ avg_turnaround_time }}</p>
+  </section>
 </div>
+
+<script>
+  function showHideFields() {
+    var algorithm = document.getElementById("algorithm").value;
+    var priorityGroup = document.getElementById("priority-group");
+    var timeQuantumGroup = document.getElementById("time-quantum-group");
+
+    console.log(algorithm);
+    console.log(algorithm == 4)
+
+    if (algorithm == 5) {
+      priorityGroup.style.display = "block";
+    } else {
+      priorityGroup.style.display = "none";
+    }
+
+    if (algorithm === 4) {
+      timeQuantumGroup.style.display = "block";
+    } else {
+      timeQuantumGroup.style.display = "none";
+    }
+  }
+</script>
 {% endblock %}

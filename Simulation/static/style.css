@@ -15,6 +15,17 @@ body {
     background-color: #f4f4f4;
 }
 
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 a {
     text-decoration: none;
 }
@@ -141,11 +152,7 @@ header a:hover {
 }
 
 /* Main Content */
-.content {
-    margin: 20px;
-    width: 80%;
-    max-width: 1200px;
-}
+
 
 .title-heading {
     text-align: center;
@@ -200,6 +207,11 @@ header a:hover {
     color: #333;
 }
 
+.process-input form{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 @media screen and (max-width: 768px) {
     header {
         flex-direction: column;
@@ -218,9 +230,103 @@ header a:hover {
     .process{
         margin: 16px 0;
     }
+
+    #content {
+        padding: 0 10px;
+        width: 100%;
+    }
 }
 
 @media screen and (max-height: 450px) {
     #sidebar {padding-top: 15px;}
     #sidebar a {font-size: 18px;}
 }
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.input-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.input-btn:hover {
+    background-color: #0056b3;
+}
+
+.gantt-chart {
+    margin-top: 20px;
+}
+.process {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+.results {
+    margin-top: 20px;
+}
+@media (max-width: 600px) {
+    .form-group input, .form-group select {
+        padding: 6px;
+    }
+    .input-btn {
+        padding: 8px 16px;
+    }
+    th, td {
+        padding: 8px;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow-x: auto;
+    display: block;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+@media (max-width: 600px) {
+    .form-group input, .form-group select {
+        padding: 6px;
+    }
+    .input-btn {
+        padding: 8px 16px;
+    }
+    th, td {
+        padding: 8px;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+
+
+
