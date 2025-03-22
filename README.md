@@ -2,9 +2,10 @@
 This project is to simulate the Operating CPU Scheduling algorithms.
 
 ## How to install and run the program
-* Step 1: Create a new folder/ directory
-* step 2: Download/ Clone the app into the new folder
-* Step 3: Open the folder using your favorite text editor.
+* 
+* step 1: Download/ Clone the app into the new folder
+* step 2: Extract the zip file if downloaded
+* Step 3: Open the folder created using your favorite text editor.
 * Step 4: Open the terminal and make sure your in the folder directory.
 * Step 5: Create a virtual Environment
 * Step 6: Activate the virtual environment
