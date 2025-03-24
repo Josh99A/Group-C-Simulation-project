@@ -14,10 +14,6 @@ function showHideFields() {
     var timeQuantumGroup = document.getElementById("time-quantum-group");
     var selectedAlgorithm = document.getElementById("select-algorithm");
 
-    console.log(algorithm);
-    console.log(algorithm == 4);
-    console.log(timeQuantumGroup);
-
     if (algorithm == 5 || algorithm == 6) {
       priorityGroup.style.display = "block";
     } else {

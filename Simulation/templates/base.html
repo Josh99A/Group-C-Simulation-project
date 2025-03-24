@@ -12,8 +12,8 @@
             <h3 class="sidebar-title">Group C</h3>
             <img src="{{ url_for('static', filename='burger-menu-svgrepo-com.svg') }}" alt="mobile menu" class="mobile-menu" onclick="closeNav()">
         </div>
-        <a href="#">Operating System</a>
-        <a href="#">DSA</a>
+        <a href="{{ url_for('process.index') }}">Operating System</a>
+        <!-- <a href="#">DSA</a> -->
     </aside>
     
     <header class="top-bar">
@@ -23,22 +23,7 @@
         </div>
         <div class="course">
             <div class="dropdown">
-                <button class="dd-btn">Operating System</button>
-                <div class="dropdown-content">
-                    <a href="">Fast Come First Serve</a>
-                    <a href="">Shortest Job first( Non preemptive)</a>
-                    <a href="">Shortest Job first(preemptive)</a>
-                    <a href="">Round Robbin</a>
-                    <a href="">Priority Queues</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dd-btn">Data structures and Algorithms</button>
-                <div class="dropdown-content">
-                    <a href="">Stacks</a>
-                    <a href="">Queues</a>
-                    <a href="">Linked lists</a>
-                </div>
+                <a href="{{ url_for('process.index') }}"><button class="dd-btn">Operating System</button></a>
             </div>
         </div>
     </header>

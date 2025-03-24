@@ -3,13 +3,12 @@
 <div class="content">
   <h1 class="title-heading">Operating Systems CPU Scheduling Algorithms</h1>
   <h3 class="title-subheading">Group C</h3>
+  {% if selected_scheduling_type %}
+    <h3>Selected Scheduling Algorithm: {{ scheduling_types[selected_scheduling_type | int - 1].name }}</h3>
+  {% endif %}
 
   <div class="process-input">
-    <form action=""></form>
-  </div>
-
-  <div class="process-input">
-    <form action="{{ url_for('process.add_process') }}" method="POST">
+    <form action="{{ url_for('process.run_simulation') }}" method="post">
       <div class="algo-select">
         <div class="form-group select-algorithm" id="select-algorithm">
           <label for="algorithm">Select a Scheduling Algorithm</label>
@@ -18,20 +17,35 @@
             id="algorithm"
             required
             onchange="showHideFields()"
+            
           >
-            {% if scheduling_types %} {% for schedule in scheduling_types %}
-            <option value="{{ schedule.id }}">{{ schedule.name }}</option>
-            {% endfor %} {% else %}
-            <option value="">{{ schedule.name }}</option>
+            {% if scheduling_types %} 
+            {% for schedule in scheduling_types %}
+            <option value="{{ schedule.id }}" {% if  selected_scheduling_type | int == schedule.id  %} selected {% endif %}>{{ schedule.name }}</option>
+            {% endfor %}
+            {% else %}
+            <option value="">No options available</option>
             {% endif %}
           </select>
-
+          
+        
+    
           <div class="form-group" id="time-quantum-group" style="display: none">
             <label for="time-quantum">Time Quantum</label>
             <input type="number" name="time_quantum" id="time-quantum" />
           </div>
+
+          <div class="run-btn">
+              <button type="submit" >Run simulation</button>
+          </div>
+
         </div>
       </div>
+    </form>
+  </div>
+
+  <div class="process-input">
+    <form action="{{ url_for('process.add_process') }}" method="POST">
 
       <div class="process-data">
         <div class="form-group">
@@ -47,7 +61,7 @@
         <div class="form-group">
           <label for="arrival-time">Arrival Time</label>
           <input
-            type="text"
+            type="number"
             name="arrival_time"
             id="arrival-time"
             placeholder="Arrival Time"
@@ -84,14 +98,14 @@
   </div>
 
   <div class="input-table">
+    <h3>Process input table</h3>
     <table>
       <thead>
         <tr>
           <th>Process</th>
           <th>Arrival Time</th>
           <th>Burst Time</th>
-          <th>Priority</th>
-          <th>Status</th>
+          <th id="Priority_name">Priority</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -101,68 +115,61 @@
           <td>{{ process.name }}</td>
           <td>{{ process.arrival_time }}</td>
           <td>{{ process.burst_time }}</td>
-          <td>{{ process.priority }}</td>
-          <td>{{ process.status }}</td>
+          <td id="Priority_value">{{ process.priority }}</td>
           <td>
-            <form action="" method="POST" style="display: inline">
-              <button type="submit">Update</button>
-            </form>
             <form
               action="{{ url_for('process.delete_process', id=process.id) }}"
               method="POST"
               style="display: inline"
             >
-              <button type="submit">Delete</button>
+              <button type="submit" style="background-color: red; padding: 8px 4px; font-weight: bold; border: none; color: #fff; border-radius: 10px; cursor: pointer;">Delete</button>
             </form>
           </td>
         </tr>
         {% endfor %} {% else %}
         <tr>
-          <td colspan="6">No processes added yet</td>
+          <td colspan="5">No processes added yet</td>
         </tr>
         {% endif %}
       </tbody>
     </table>
-    {% if processes | length > 1 %}
-    <a href="">
-      <button>Clear table</button>
+    {% if processes | length >= 1 %}
+    <a href="{{ url_for('process.clear_db') }}">
+      <button class="btn">Clear table</button>
     </a>
     {% endif %}
 
-    <div class="run-btn">
-      <a href="">
-        <button>Run simulation</button>
-      </a>
-    </div>
+    
   </div>
+  {% if  process_result_list %}
   <div class="results-table">
-    <h3>Results</h3>
+    <h3>Results table</h3>
     <table>
       <thead>
         <tr>
           <th>Process</th>
           <th>Arrival Time</th>
           <th>Burst Time</th>
+          {% if selected_scheduling_type == 5 or selected_scheduling_type == 6 %}
           <th>Priority</th>
-          <th>Completed time</th>
+          {% endif %}
           <th>Waiting time</th>
           <th>Turnaround time</th>
         </tr>
       </thead>
-      <tbody>
-        {% if processes %} {% for process in processes %}
+      <tbody>   
+        {% for process in  process_result_list %}
         <tr>
           <td>{{ process.name }}</td>
           <td>{{ process.arrival_time }}</td>
           <td>{{ process.burst_time }}</td>
+          {% if selected_scheduling_type == 5 or selected_scheduling_type == 6 %}
           <td>{{ process.priority }}</td>
-          <td>{{ process.status }}</td>
+          {% endif %}
+          <td>{{ process.waiting_time }}</td>
+          <td>{{ process.turnaround_time }}</td>
         </tr>
-        {% endfor %} {% else %}
-        <tr>
-          <td colspan="6">No processes added yet</td>
-        </tr>
-        {% endif %}
+        {% endfor %}    
       </tbody>
     </table>
   </div>
@@ -170,21 +177,23 @@
   <section class="simulation">
     <h3 class="sim-title">Gantt Chart</h3>
     <div class="gantt-chart">
-      {% for process in processes %}
+      {% for process_tup in execution_order %}
+      
       <div
         class="process"
-        data-time="{{ process.arrival_time }}-{{ process.burst_time }}"
+        data-time="{{ process_tup[1]}}-{{ process_tup[2] }}"
       >
-        {{ process.name }}
+       {% if process_tup[0].name %} {{ process_tup[0].name }} {% else %} {{ process_tup[0] }} {% endif %}
       </div>
       {% endfor %}
     </div>
   </section>
   <section class="results">
     <h3 class="results-title">Results</h3>
-    <p>Average Waiting Time: {{ avg_waiting_time }}</p>
-    <p>Average Turnaround Time: {{ avg_turnaround_time }}</p>
+    <p style="font-weight: bold;">Average Waiting Time: {{ avg_waiting_time }}</p>
+    <p style="font-weight: bold;">Average Turnaround Time: {{ avg_turnaround_time }}</p>
   </section>
 </div>
+{% endif %}
 
 {% endblock %}

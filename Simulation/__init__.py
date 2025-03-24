@@ -23,11 +23,6 @@ def create_app(test_config=None):
         os.mkdir(app.instance_path)
     except OSError:
         pass
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'hello, world!'
     
     from . import db, process
     app.register_blueprint(process.process_bp)

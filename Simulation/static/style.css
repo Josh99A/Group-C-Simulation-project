@@ -228,7 +228,8 @@ header a:hover {
     
 }
 
-.run-btn button{
+
+.run-btn button, .btn {
     background-color: #007BFF;
     color: white;
     border: none;
@@ -238,6 +239,10 @@ header a:hover {
     width: 100%;
     margin-top: 10px;
     border-radius: 10px;
+}
+
+a .btn{
+    max-width: 150px;
 }
 
 .run-btn button:hover{
@@ -332,6 +337,12 @@ header a:hover {
     }
     th, td {
         padding: 8px;
+    }
+
+}
+@media (max-width: 775px) {
+    .dd-btn{
+        display: none;
     }
 }
 
