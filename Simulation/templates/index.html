@@ -21,7 +21,7 @@
           >
             {% if scheduling_types %} 
             {% for schedule in scheduling_types %}
-            <option value="{{ schedule.id }}" {% if  selected_scheduling_type | int == schedule.id  %} selected {% endif %}>{{ schedule.name }}</option>
+            <option value="{{ schedule.id }}" {% if selected_scheduling_type and  selected_scheduling_type | int == schedule.id  %} selected {% endif %}>{{ schedule.name }}</option>
             {% endfor %}
             {% else %}
             <option value="">No options available</option>
